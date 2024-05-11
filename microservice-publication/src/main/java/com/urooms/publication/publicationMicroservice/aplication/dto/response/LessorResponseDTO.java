@@ -1,6 +1,5 @@
-package com.urooms.account.accountMicroservice.aplication.dto.response;
+package com.urooms.publication.publicationMicroservice.aplication.dto.response;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -33,9 +33,8 @@ public class LessorController {
 
     //@Operation(summary = "get a lessor by id")
     @GetMapping("/lessors/{id}")
-    public ResponseEntity<ApiResponse<LessorResponseDTO>> getLessorById(@PathVariable("id") int id) {
-        ApiResponse<LessorResponseDTO> response = lessorService.getLessorById(id);
-        return new ResponseEntity<>(response, response.getStatus() == Estatus.SUCCESS ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    public LessorResponseDTO getLessorById(@PathVariable("id") int id) {
+        return lessorService.getLessorById(id).getData();
     }
 
     //@Operation(summary = "create a new lessor")
