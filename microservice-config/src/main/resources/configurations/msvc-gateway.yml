@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: msvc-gateway
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: publications
+            uri: http://localhost:9090
+            predicates:
+              - Path=/api/v2/URooms/**
+          - id: accounts
+            uri: http://localhost:8090
+            predicates:
+              - Path=/api/v1/URooms/**

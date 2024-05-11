@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/URooms")
+@RequestMapping("/api/v2/URooms")
 public class DistrictController {
     private final DistrictService districtService;
 
