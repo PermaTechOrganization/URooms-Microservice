@@ -65,10 +65,14 @@ public class PublicationServiceImpl implements PublicationService {
         var publication = modelMapper.map(publicationRequestDTO, Publication.class);
         publication.setLessorId(publicationRequestDTO.getLessor());
         publication.setTypeProperty(typePropertyRepository.getTypePropertyById(publicationRequestDTO.getTypeProperty()));
-        publicationRepository.save(publication);
-        var response = modelMapper.map(publication, PublicationResponseDTO.class);
-        response.setLessor(lessorClient.getLessorById(publicationRequestDTO.getLessor()));
-        return new ApiResponse<>("Publication created successfully", Estatus.SUCCESS, response);
+        if(lessorClient.getLessorById(publicationRequestDTO.getLessor()) == null){
+            return new ApiResponse<>("Lessor not found", Estatus.ERROR, null);
+        }else {
+            publicationRepository.save(publication);
+            var response = modelMapper.map(publication, PublicationResponseDTO.class);
+            response.setLessor(lessorClient.getLessorById(publicationRequestDTO.getLessor()));
+            return new ApiResponse<>("Publication created successfully", Estatus.SUCCESS, response);
+        }
     }
 
     @Override
@@ -103,7 +107,11 @@ public class PublicationServiceImpl implements PublicationService {
     public ApiResponse<List<PublicationResponseDTO>> getPublications() {
         List<Publication> publications = (List<Publication>) publicationRepository.findAll();
         List<PublicationResponseDTO> responseDTO = publications.stream()
-                .map(publication -> modelMapper.map(publication, PublicationResponseDTO.class))
+                .map(publication ->{
+                        PublicationResponseDTO dto = modelMapper.map(publication, PublicationResponseDTO.class);
+                        dto.setLessor(lessorClient.getLessorById(publication.getLessorId()));
+                        return dto;
+                })
                 .collect(Collectors.toList());
         return new ApiResponse<>("Publications fetched successfully", Estatus.SUCCESS, responseDTO);
     }
@@ -113,7 +121,11 @@ public class PublicationServiceImpl implements PublicationService {
         List<Publication> publicationsList = publicationRepository.getPublicationByLessorId(lessorId);
 
         List<PublicationResponseDTO> responseDTOList = publicationsList.stream()
-                .map(entity -> modelMapper.map(entity, PublicationResponseDTO.class))
+                .map(publication -> {
+                    PublicationResponseDTO dto = modelMapper.map(publication, PublicationResponseDTO.class);
+                    dto.setLessor(lessorClient.getLessorById(publication.getLessorId()));
+                    return dto;
+                })
                 .collect(Collectors.toList());
 
         return new ApiResponse<>("Publications fetched successfully", Estatus.SUCCESS, responseDTOList);
@@ -124,7 +136,11 @@ public class PublicationServiceImpl implements PublicationService {
         List<Publication> publicationsList = publicationRepository.getPublicationByTypePropertyId(typePropertyId);
 
         List<PublicationResponseDTO> responseDTOList = publicationsList.stream()
-                .map(entity -> modelMapper.map(entity, PublicationResponseDTO.class))
+                .map(publication -> {
+                    PublicationResponseDTO dto = modelMapper.map(publication, PublicationResponseDTO.class);
+                    dto.setLessor(lessorClient.getLessorById(publication.getLessorId()));
+                    return dto;
+                })
                 .collect(Collectors.toList());
 
         return new ApiResponse<>("Publications fetched successfully", Estatus.SUCCESS, responseDTOList);
