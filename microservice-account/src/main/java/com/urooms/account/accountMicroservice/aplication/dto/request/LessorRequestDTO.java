@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LessorRequestDTO {
+public class    LessorRequestDTO {
 
     @NotBlank(message = "firstName is mandatory")
     private String firstName;

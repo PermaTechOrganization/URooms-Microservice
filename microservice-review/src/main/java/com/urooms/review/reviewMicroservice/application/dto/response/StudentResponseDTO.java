@@ -1,6 +1,5 @@
-package com.urooms.account.accountMicroservice.aplication.dto.response;
+package com.urooms.review.reviewMicroservice.application.dto.response;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,11 +24,5 @@ public class StudentResponseDTO {
     private String phone;
 
     private String photoUrl;
-
-    private AccountResponseDTO account;
-
-    private CareerResponseDTO career;
-
-    private UniversityResponseDTO university;
 
 }

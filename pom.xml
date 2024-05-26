@@ -23,6 +23,7 @@
     <module>microservice-config</module>
     <module>microservice-account</module>
     <module>microservice-publication</module>
+    <module>microservice-review</module>
   </modules>
 
   <properties>

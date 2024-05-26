@@ -2,6 +2,7 @@ package com.urooms.publication.publicationMicroservice.aplication.service.Impl;
 
 import com.urooms.publication.publicationMicroservice.aplication.dto.request.PublicationRequestDTO;
 import com.urooms.publication.publicationMicroservice.aplication.dto.response.LessorResponseDTO;
+import com.urooms.publication.publicationMicroservice.aplication.dto.response.PublicationClientResponseDTO;
 import com.urooms.publication.publicationMicroservice.aplication.dto.response.PublicationResponseDTO;
 import com.urooms.publication.publicationMicroservice.aplication.service.PublicationService;
 import com.urooms.publication.client.LessorClient;
@@ -88,6 +89,7 @@ public class PublicationServiceImpl implements PublicationService {
             publication.setTypeProperty(typePropertyRepository.getTypePropertyById(publicationRequestDTO.getTypeProperty()));
             publicationRepository.save(publication);
             PublicationResponseDTO response = modelMapper.map(publication, PublicationResponseDTO.class);
+            response.setLessor(lessorClient.getLessorById(publicationRequestDTO.getLessor()));
             return new ApiResponse<>("Publication updated successfully", Estatus.SUCCESS, response);
         }
     }
@@ -154,4 +156,23 @@ public class PublicationServiceImpl implements PublicationService {
 
     }
 
+    @Override
+    public ApiResponse<PublicationClientResponseDTO> getPublicationClientById(int id) {
+        PublicationResponseDTO publicationResponseDTO = getPublicationById(id).getData();
+
+        if (publicationResponseDTO != null) {
+            PublicationClientResponseDTO responseDTO =
+                    PublicationClientResponseDTO.builder()
+                        .id(publicationResponseDTO.getId())
+                        .title(publicationResponseDTO.getTitle())
+                        .description(publicationResponseDTO.getDescription())
+                        .imageURL(publicationResponseDTO.getImageURL())
+                        .price(publicationResponseDTO.getPrice())
+                        .rating(publicationResponseDTO.getRating())
+                        .build();
+            return new ApiResponse<>("Publication fetched successfully", Estatus.SUCCESS, responseDTO);
+        } else {
+            return new ApiResponse<>("Publication not found", Estatus.ERROR, null);
+        }
+    }
 }

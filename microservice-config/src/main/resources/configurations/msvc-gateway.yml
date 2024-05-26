@@ -16,3 +16,7 @@ spring:
             uri: http://localhost:8090
             predicates:
               - Path=/api/v1/URooms/**
+          - id: reviews
+            uri: http://localhost:9070
+            predicates:
+              - Path=/api/v3/URooms/**

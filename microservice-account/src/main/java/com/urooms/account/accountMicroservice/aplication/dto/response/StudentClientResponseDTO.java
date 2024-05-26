@@ -1,6 +1,5 @@
 package com.urooms.account.accountMicroservice.aplication.dto.response;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class StudentResponseDTO {
+public class StudentClientResponseDTO {
 
     private int id;
 
@@ -25,11 +24,5 @@ public class StudentResponseDTO {
     private String phone;
 
     private String photoUrl;
-
-    private AccountResponseDTO account;
-
-    private CareerResponseDTO career;
-
-    private UniversityResponseDTO university;
 
 }

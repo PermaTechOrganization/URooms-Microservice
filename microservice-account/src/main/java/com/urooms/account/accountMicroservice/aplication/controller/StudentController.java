@@ -1,6 +1,7 @@
 package com.urooms.account.accountMicroservice.aplication.controller;
 
 import com.urooms.account.accountMicroservice.aplication.dto.request.StudentRequestDTO;
+import com.urooms.account.accountMicroservice.aplication.dto.response.StudentClientResponseDTO;
 import com.urooms.account.accountMicroservice.aplication.dto.response.StudentResponseDTO;
 import com.urooms.account.accountMicroservice.aplication.services.StudentService;
 import com.urooms.account.shared.model.dto.response.ApiResponse;
@@ -58,4 +59,11 @@ public class StudentController {
         var res = studentService.deleteStudent(id);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
+
+    @GetMapping("/studentsClient/{id}")
+    public StudentClientResponseDTO getStudentClientById(@PathVariable("id") int id){
+        ApiResponse<StudentClientResponseDTO> response = studentService.getStudentClientById(id);
+        return response.getData();
+    }
+
 }

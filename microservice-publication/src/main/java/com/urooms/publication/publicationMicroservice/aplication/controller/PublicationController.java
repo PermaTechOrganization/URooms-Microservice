@@ -1,6 +1,7 @@
 package com.urooms.publication.publicationMicroservice.aplication.controller;
 
 import com.urooms.publication.publicationMicroservice.aplication.dto.request.PublicationRequestDTO;
+import com.urooms.publication.publicationMicroservice.aplication.dto.response.PublicationClientResponseDTO;
 import com.urooms.publication.publicationMicroservice.aplication.dto.response.PublicationResponseDTO;
 import com.urooms.publication.publicationMicroservice.aplication.service.PublicationService;
 import com.urooms.publication.shared.model.dto.response.ApiResponse;
@@ -60,6 +61,11 @@ public class PublicationController {
     public ResponseEntity<ApiResponse<Void>> deletePublication(@PathVariable int id) {
         var res = publicationService.deletePublication(id);
         return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @GetMapping("/publicationsClient/{id}")
+    public PublicationClientResponseDTO getPublicationClientById(@PathVariable("id") int id) {
+        return publicationService.getPublicationClientById(id).getData();
     }
 
 }

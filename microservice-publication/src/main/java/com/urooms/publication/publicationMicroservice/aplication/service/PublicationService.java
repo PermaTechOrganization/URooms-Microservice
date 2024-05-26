@@ -2,6 +2,7 @@ package com.urooms.publication.publicationMicroservice.aplication.service;
 
 import com.urooms.publication.publicationMicroservice.aplication.dto.request.PublicationRequestDTO;
 import com.urooms.publication.publicationMicroservice.aplication.dto.response.LessorResponseDTO;
+import com.urooms.publication.publicationMicroservice.aplication.dto.response.PublicationClientResponseDTO;
 import com.urooms.publication.publicationMicroservice.aplication.dto.response.PublicationResponseDTO;
 import com.urooms.publication.shared.model.dto.response.ApiResponse;
 
@@ -16,6 +17,8 @@ public interface PublicationService {
     ApiResponse<List<PublicationResponseDTO>> getPublicationByTypePropertyId(int typePropertyId);
 
     ApiResponse<PublicationResponseDTO> getPublicationById(int id);
+
+    ApiResponse<PublicationClientResponseDTO> getPublicationClientById(int id);
 
     ApiResponse<PublicationResponseDTO> createPublication(PublicationRequestDTO publicationRequestDTO);
 

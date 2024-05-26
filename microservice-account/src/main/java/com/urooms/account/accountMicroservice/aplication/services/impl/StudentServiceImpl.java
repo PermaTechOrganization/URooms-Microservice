@@ -1,6 +1,7 @@
 package com.urooms.account.accountMicroservice.aplication.services.impl;
 
 import com.urooms.account.accountMicroservice.aplication.dto.request.StudentRequestDTO;
+import com.urooms.account.accountMicroservice.aplication.dto.response.StudentClientResponseDTO;
 import com.urooms.account.accountMicroservice.aplication.dto.response.StudentResponseDTO;
 import com.urooms.account.accountMicroservice.aplication.services.StudentService;
 import com.urooms.account.accountMicroservice.domain.entities.Student;
@@ -33,6 +34,27 @@ public class StudentServiceImpl implements StudentService {
         this.universityRepository = universityRepository;
         this.careerRepository = careerRepository;
         this.accountRepository = accountRepository;
+    }
+
+    @Override
+    public ApiResponse<StudentClientResponseDTO> getStudentClientById(int id) {
+        StudentResponseDTO studentResponseDTO = getStudentById(id).getData();
+
+        if (studentResponseDTO != null) {
+            StudentClientResponseDTO studentClientResponseDTO =
+                    StudentClientResponseDTO.builder()
+                            .id(studentResponseDTO.getId())
+                            .firstName(studentResponseDTO.getFirstName())
+                            .lastName(studentResponseDTO.getLastName())
+                            .gender(studentResponseDTO.getGender())
+                            .dni(studentResponseDTO.getDni())
+                            .phone(studentResponseDTO.getPhone())
+                            .photoUrl(studentResponseDTO.getPhotoUrl()).build();
+
+            return new ApiResponse<>("Student fetched successfully", Estatus.SUCCESS, studentClientResponseDTO);
+        } else {
+            return new ApiResponse<>("Student not found", Estatus.ERROR, null);
+        }
     }
 
     @Override
