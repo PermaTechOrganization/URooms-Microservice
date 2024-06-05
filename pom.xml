@@ -24,6 +24,7 @@
     <module>microservice-account</module>
     <module>microservice-publication</module>
     <module>microservice-review</module>
+    <module>microservice-management</module>
   </modules>
 
   <properties>

@@ -20,3 +20,7 @@ spring:
             uri: http://localhost:9070
             predicates:
               - Path=/api/v3/URooms/**
+          - id: managements
+            uri: http://localhost:9060
+            predicates:
+              - Path=/api/v4/URooms/**

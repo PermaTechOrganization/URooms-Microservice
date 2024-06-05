@@ -12,6 +12,7 @@
         <module name="microservice-review" />
         <module name="microservice-config" />
         <module name="microservice-publication" />
+        <module name="microservice-management" />
         <module name="microservice-eureka" />
         <module name="microservice.gateway" />
       </profile>
@@ -23,6 +24,7 @@
       <module name="microservice-config" options="-parameters" />
       <module name="microservice-eureka" options="-parameters" />
       <module name="microservice-gateway" options="-parameters" />
+      <module name="microservice-management" options="-parameters" />
       <module name="microservice-publication" options="-parameters" />
       <module name="microservice-review" options="-parameters" />
       <module name="microservice.gateway" options="-parameters" />

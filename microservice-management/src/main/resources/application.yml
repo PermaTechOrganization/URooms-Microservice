@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: msvc-management
+  config:
+    import: optional:configserver:http://localhost:8888
+  main:
+    allow-bean-definition-overriding: true

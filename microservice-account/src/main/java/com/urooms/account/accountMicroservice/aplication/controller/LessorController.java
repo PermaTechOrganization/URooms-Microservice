@@ -1,6 +1,7 @@
 package com.urooms.account.accountMicroservice.aplication.controller;
 
 import com.urooms.account.accountMicroservice.aplication.dto.request.LessorRequestDTO;
+import com.urooms.account.accountMicroservice.aplication.dto.response.LessorClientResponseDTO;
 import com.urooms.account.accountMicroservice.aplication.dto.response.LessorResponseDTO;
 import com.urooms.account.accountMicroservice.aplication.services.LessorService;
 import com.urooms.account.shared.model.dto.response.ApiResponse;
@@ -56,5 +57,11 @@ public class LessorController {
     public ResponseEntity<ApiResponse<Void>> deleteLessor(@PathVariable int id) {
         var res = lessorService.deleteLessor(id);
         return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @GetMapping("/lessorsClient/{id}")
+    public LessorClientResponseDTO getLessorClientById(@PathVariable("id") int id) {
+        ApiResponse<LessorClientResponseDTO> response = lessorService.getLessorClientById(id);
+        return response.getData();
     }
 }

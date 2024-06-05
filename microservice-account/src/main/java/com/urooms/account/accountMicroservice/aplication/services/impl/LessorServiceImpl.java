@@ -1,6 +1,7 @@
 package com.urooms.account.accountMicroservice.aplication.services.impl;
 
 import com.urooms.account.accountMicroservice.aplication.dto.request.LessorRequestDTO;
+import com.urooms.account.accountMicroservice.aplication.dto.response.LessorClientResponseDTO;
 import com.urooms.account.accountMicroservice.aplication.dto.response.LessorResponseDTO;
 import com.urooms.account.accountMicroservice.aplication.services.LessorService;
 import com.urooms.account.accountMicroservice.domain.entities.Lessor;
@@ -26,6 +27,25 @@ public class LessorServiceImpl implements LessorService {
         this.lessorRepository = lessorRepository;
         this.modelMapper = modelMapper;
         this.accountRepository = accountRepository;
+    }
+
+    @Override
+    public ApiResponse<LessorClientResponseDTO> getLessorClientById(int id) {
+        LessorResponseDTO lessorResponseDTO = getLessorById(id).getData();
+
+        if (lessorResponseDTO != null) {
+            LessorClientResponseDTO lessorClientResponseDTO =
+                    LessorClientResponseDTO.builder()
+                            .id(lessorResponseDTO.getId())
+                            .firstName(lessorResponseDTO.getFirstName())
+                            .lastName(lessorResponseDTO.getLastName())
+                            .dni(lessorResponseDTO.getDni())
+                            .phone(lessorResponseDTO.getPhone())
+                            .photoUrl(lessorResponseDTO.getPhotoUrl()).build();
+            return new ApiResponse<>("Lessor fetched successfully", Estatus.SUCCESS, lessorClientResponseDTO);
+        } else {
+            return new ApiResponse<>("Lessor not found", Estatus.ERROR, null);
+        }
     }
 
     @Override
