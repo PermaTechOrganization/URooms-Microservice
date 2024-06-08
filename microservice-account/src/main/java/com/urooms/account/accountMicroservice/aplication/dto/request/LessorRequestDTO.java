@@ -7,13 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class    LessorRequestDTO {
-
-    @NotBlank(message = "firstName is mandatory")
-    private String firstName;
-
-    @NotBlank(message = "lastName is mandatory")
-    private String lastName;
+public class LessorRequestDTO {
 
     @NotBlank(message = "dni is mandatory")
     private String dni;
@@ -25,6 +19,6 @@ public class    LessorRequestDTO {
     private String photoUrl;
 
     @NotBlank(message = "account is mandatory")
-    private int account;
+    private String account;
 
 }

@@ -26,9 +26,16 @@ public class Account {
     @Column(name = "password", length = 150, nullable = false)
     private String password;
 
+    @Column(name = "firstName", length = 150, nullable = false)
+    private String firstName;
+
+    @Column(name = "lastName", length = 150, nullable = false)
+    private String lastName;
+
+    /*
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
+    private Role role;*/
 
 }

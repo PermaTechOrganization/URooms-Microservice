@@ -6,9 +6,15 @@ import com.urooms.account.accountMicroservice.aplication.services.AccountService
 import com.urooms.account.accountMicroservice.domain.entities.Account;
 import com.urooms.account.accountMicroservice.infraestructure.repositories.AccountRepository;
 import com.urooms.account.accountMicroservice.infraestructure.repositories.RoleRepository;
+import com.urooms.account.shared.exception.CustomException;
+import com.urooms.account.shared.exception.ResourceNotFoundException;
 import com.urooms.account.shared.model.dto.response.ApiResponse;
 import com.urooms.account.shared.model.enums.Estatus;
+import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.NotFoundException;
+import org.keycloak.admin.client.Keycloak;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
@@ -17,31 +23,40 @@ import java.util.Optional;
 @Service
 public class AccountServiceImpl implements AccountService {
 
-    private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
     private final ModelMapper modelMapper;
+    private final Keycloak keycloak;
+    private final String REAL_NAME = "urooms";
 
-    public AccountServiceImpl(AccountRepository accountRepository, ModelMapper modelMapper, RoleRepository roleRepository) {
-        this.accountRepository = accountRepository;
+    public AccountServiceImpl(ModelMapper modelMapper, Keycloak keycloak) {
         this.modelMapper = modelMapper;
-        this.roleRepository = roleRepository;
+        this.keycloak = keycloak;
     }
 
     @Override
-    public ApiResponse<AccountResponseDTO> createAccount(AccountRequestDTO accountRequestDTO) {
+    public ApiResponse<Object> updateAccount(String id, AccountRequestDTO accountRequestDTO) {
 
-        var account = modelMapper.map(accountRequestDTO, Account.class);
-        account.setRole(roleRepository.getRoleById(accountRequestDTO.getRole()));
-        accountRepository.save(account);
+        try{
+            var existingAccount = keycloak.realm(REAL_NAME)
+                    .users()
+                    .get(id)
+                    .toRepresentation();
 
-        var response = modelMapper.map(account, AccountResponseDTO.class);
+            existingAccount.setEmail(accountRequestDTO.getEmail());
+            existingAccount.setUsername(accountRequestDTO.getUserName());
 
-        return new ApiResponse<>("Account created successfully", Estatus.SUCCESS, response);
-    }
+            keycloak.realm(REAL_NAME)
+                    .users()
+                    .get(id)
+                    .update(existingAccount);
 
-    @Override
-    public ApiResponse<AccountResponseDTO> updateAccount(int id, AccountRequestDTO accountRequestDTO) {
+            return new ApiResponse<>("Account updated successfully", Estatus.SUCCESS, null);
+        } catch (NotFoundException e){
+            throw  new ResourceNotFoundException("User", "id", id);
+        } catch (BadRequestException e){
+            throw new CustomException(HttpStatus.BAD_REQUEST, "Error while fetching user details. Please try again later.", e.getMessage());
+        }
 
+        /*
         Optional<Account> accountOptional = accountRepository.findById(id);
 
         if (accountOptional.isEmpty()) {
@@ -49,27 +64,28 @@ public class AccountServiceImpl implements AccountService {
         }else {
             Account account = accountOptional.get();
             modelMapper.map(accountRequestDTO, account);
-            account.setRole(roleRepository.getRoleById(accountRequestDTO.getRole()));
             accountRepository.save(account);
             AccountResponseDTO response = modelMapper.map(account, AccountResponseDTO.class);
             return new ApiResponse<>("Account updated successfully", Estatus.SUCCESS, response);
-        }
+        }*/
     }
 
     @Override
-    public ApiResponse<Void> deleteAccount(int id) {
-        Optional<Account> accountOptional = accountRepository.findById(id);
-        if (accountOptional.isEmpty()) {
-            return new ApiResponse<>("Account not found", Estatus.ERROR, null);
-        }else {
-            accountRepository.deleteById(id);
+    public ApiResponse<Object> deleteAccount(String id) {
+
+        try{
+            keycloak.realm(REAL_NAME)
+                    .users()
+                    .get(id)
+                    .remove();
+
             return new ApiResponse<>("Account deleted successfully", Estatus.SUCCESS, null);
+        }catch (NotFoundException e){
+            throw  new ResourceNotFoundException("User", "id", id);
+        }catch (BadRequestException e){
+            throw new CustomException(HttpStatus.BAD_REQUEST, "Error while fetching user details. Please try again later.", e.getMessage());
         }
+
     }
 
-    @Override
-    public Account getAccountById(int id) {
-        Optional<Account> accountOptional = accountRepository.findById(id);
-        return accountOptional.orElse(null);
-    }
 }

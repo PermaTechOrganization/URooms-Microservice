@@ -17,12 +17,6 @@ public class Lessor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "firstName", length = 150, nullable = false)
-    private String firstName;
-
-    @Column(name = "lastName", length = 150, nullable = false)
-    private String lastName;
-
     @Column(name = "dni", length = 8, nullable = false)
     private String dni;
 
@@ -32,9 +26,19 @@ public class Lessor {
     @Column(name = "photoUrl", length = 150, nullable = false)
     private String photoUrl;
 
+    @Column(name = "account_id", nullable = false)
+    private String account;
+
+/*
+    @Column(name = "firstName", length = 150, nullable = false)
+    private String firstName;
+
+    @Column(name = "lastName", length = 150, nullable = false)
+    private String lastName;
+
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
+    private Account account;*/
 
 }

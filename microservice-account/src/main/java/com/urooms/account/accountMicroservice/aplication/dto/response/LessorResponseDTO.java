@@ -24,4 +24,5 @@ public class LessorResponseDTO {
 
     private String photoUrl;
 
+    private AccountResponseDTO account;
 }

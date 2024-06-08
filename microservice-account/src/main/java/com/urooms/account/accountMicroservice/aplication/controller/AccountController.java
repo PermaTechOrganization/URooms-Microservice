@@ -21,24 +21,16 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    //@Operation(summary = "create a new account")
-    @PostMapping("/accounts")
-    public ResponseEntity<ApiResponse<AccountResponseDTO>> createAccount(@RequestBody AccountRequestDTO accountRequestDTO) {
-
-        var res = accountService.createAccount(accountRequestDTO);
-        return new ResponseEntity<>(res, HttpStatus.CREATED);
-    }
-
     //@Operation(summary = "update an existing account")
     @PutMapping("/accounts/{id}")
-    public ResponseEntity<ApiResponse<AccountResponseDTO>> updateAccount(@PathVariable int id, @RequestBody AccountRequestDTO accountRequestDTO) {
+    public ResponseEntity<ApiResponse<Object>> updateAccount(@PathVariable String id, @RequestBody AccountRequestDTO accountRequestDTO) {
         var res = accountService.updateAccount(id, accountRequestDTO);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     //@Operation(summary = "delete an account")
     @DeleteMapping("/accounts/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteAccount(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<Object>> deleteAccount(@PathVariable String id) {
         var res = accountService.deleteAccount(id);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }

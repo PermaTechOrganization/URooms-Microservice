@@ -6,21 +6,39 @@ spring:
     name: msvc-gateway
   cloud:
     gateway:
-      mvc:
-        routes:
-          - id: publications
-            uri: http://localhost:9090
-            predicates:
-              - Path=/api/v2/URooms/**
-          - id: accounts
-            uri: http://localhost:8090
-            predicates:
-              - Path=/api/v1/URooms/**
-          - id: reviews
-            uri: http://localhost:9070
-            predicates:
-              - Path=/api/v3/URooms/**
-          - id: managements
-            uri: http://localhost:9060
-            predicates:
-              - Path=/api/v4/URooms/**
+      default-filters:
+        - TokenRelay
+      routes:
+        - id: publications
+          uri: http://localhost:9090
+          predicates:
+            - Path=/api/v2/URooms/**
+        - id: accounts
+          uri: http://localhost:8090
+          predicates:
+            - Path=/api/v1/URooms/**
+          filters:
+            - RemoveRequestHeader=Cookie
+        - id: reviews
+          uri: http://localhost:9070
+          predicates:
+            - Path=/api/v3/URooms/**
+        - id: managements
+          uri: http://localhost:9060
+          predicates:
+            - Path=/api/v4/URooms/**
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            user-name-attribute: preferred_username
+            issuer-uri: http://localhost:8180/realms/urooms
+        registration:
+          urooms-client:
+            provider: keycloak
+            client-id: urooms-client
+            client-secret: YHtytGJdn6pH0WSNFj9za8jZW3q1KJ3q
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid

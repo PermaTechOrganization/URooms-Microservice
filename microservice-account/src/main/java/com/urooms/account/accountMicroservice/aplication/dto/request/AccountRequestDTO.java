@@ -19,6 +19,4 @@ public class AccountRequestDTO {
     @NotBlank(message = "password is mandatory")
     private String password;
 
-    @NotBlank(message = "role is mandatory")
-    private int role;
 }

@@ -9,12 +9,6 @@ import lombok.*;
 @Builder
 public class StudentRequestDTO {
 
-    @NotBlank(message = "First name is required")
-    private String firstName;
-
-    @NotBlank(message = "Last name is required")
-    private String lastName;
-
     @NotBlank(message = "gender is required")
     private String gender;
 
@@ -28,7 +22,7 @@ public class StudentRequestDTO {
     private String photoUrl;
 
     @NotBlank(message = "Account is required")
-    private int account;
+    private String account;
 
     @NotBlank(message = "Career is required")
     private int career;
