@@ -19,7 +19,6 @@ public class GatewayController {
         String username = principal.getPreferredUsername();
         String userId = principal.getSubject();
         return new LoginRegisterResponseDTO(username, session.getId(), userId);
-
     }
 
     @GetMapping("/token")

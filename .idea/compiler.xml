@@ -17,6 +17,9 @@
         <module name="microservice.gateway" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="microservice-search" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -27,6 +30,7 @@
       <module name="microservice-management" options="-parameters" />
       <module name="microservice-publication" options="-parameters" />
       <module name="microservice-review" options="-parameters" />
+      <module name="microservice-search" options="-parameters" />
       <module name="microservice.gateway" options="-parameters" />
     </option>
   </component>

@@ -63,14 +63,14 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ApiResponse<List<StudentResponseDTO>> getAllStudents() {
-        List<University> universityList = (List<University>) universityRepository.findAll();
-        List<StudentResponseDTO> studentDTOList = universityList.stream()
+        List<Student> studentList = (List<Student>) studentRepository.findAll();
+        List<StudentResponseDTO> studentDTOList = studentList.stream()
                 .map(entity ->{
                     StudentResponseDTO studentResponseDTO = modelMapper.map(entity, StudentResponseDTO.class);
 
                     UserRepresentation userRepresentation = keycloak.realm(REAL_NAME)
                             .users()
-                            .get(studentResponseDTO.getAccount().getId())
+                            .get(entity.getAccount())
                             .toRepresentation();
 
                     AccountResponseDTO accountResponseDTO = modelMapper.map(userRepresentation, AccountResponseDTO.class);

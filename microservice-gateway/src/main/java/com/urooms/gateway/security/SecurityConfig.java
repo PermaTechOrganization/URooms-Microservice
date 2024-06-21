@@ -1,5 +1,6 @@
 package com.urooms.gateway.security;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -17,7 +18,9 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain filterChain (ServerHttpSecurity http, ServerLogoutSuccessHandler logoutSuccessHandler){
         http.authorizeExchange(exchanges ->
-                exchanges.anyExchange().authenticated()
+                exchanges
+                        .pathMatchers(HttpMethod.POST, "/api/v1/URooms/keycloak/user").permitAll()
+                        .anyExchange().authenticated()
         );
 
         http.oauth2Login(Customizer.withDefaults());

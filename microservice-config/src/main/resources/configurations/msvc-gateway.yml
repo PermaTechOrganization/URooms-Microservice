@@ -27,6 +27,13 @@ spring:
           uri: http://localhost:9060
           predicates:
             - Path=/api/v4/URooms/**
+        - id: accounts-create-user
+          uri: http://localhost:8090
+          predicates:
+            - Path=/api/v1/URooms/keycloak/user
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Authorization
   security:
     oauth2:
       client:
