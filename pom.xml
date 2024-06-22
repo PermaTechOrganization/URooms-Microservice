@@ -25,6 +25,7 @@
     <module>microservice-publication</module>
     <module>microservice-review</module>
     <module>microservice-management</module>
+    <module>microservice-notification</module>
   </modules>
 
   <properties>

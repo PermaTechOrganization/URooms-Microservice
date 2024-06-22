@@ -2,10 +2,12 @@ package com.urooms.management.managementMicroservice.application.service.impl;
 
 import com.urooms.management.client.LessorClient;
 import com.urooms.management.client.StudentClient;
+import com.urooms.management.events.service.KafkaProducerService;
 import com.urooms.management.managementMicroservice.application.dto.request.RentalContractRequestDTO;
 import com.urooms.management.managementMicroservice.application.dto.response.RentalContractResponseDTO;
 import com.urooms.management.managementMicroservice.application.service.RentalContractService;
 import com.urooms.management.managementMicroservice.domain.entities.RentalContract;
+import com.urooms.management.managementMicroservice.domain.events.RentalCreateEvent;
 import com.urooms.management.managementMicroservice.infraestructure.repositories.RentalContractRepository;
 import com.urooms.management.shared.model.dto.response.ApiResponse;
 import com.urooms.management.shared.model.enums.Estatus;
@@ -22,12 +24,14 @@ public class RentalContractServiceImpl implements RentalContractService {
     private final ModelMapper modelMapper;
     private final LessorClient lessorClient;
     private final StudentClient studentClient;
+    private final KafkaProducerService kafkaProducerService;
 
-    public RentalContractServiceImpl(RentalContractRepository rentalContractRepository, ModelMapper modelMapper, LessorClient lessorClient, StudentClient studentClient) {
+    public RentalContractServiceImpl(RentalContractRepository rentalContractRepository, KafkaProducerService kafkaProducerService, ModelMapper modelMapper, LessorClient lessorClient, StudentClient studentClient) {
         this.rentalContractRepository = rentalContractRepository;
         this.modelMapper = modelMapper;
         this.lessorClient = lessorClient;
         this.studentClient = studentClient;
+        this.kafkaProducerService = kafkaProducerService;
     }
 
     @Override
@@ -70,6 +74,8 @@ public class RentalContractServiceImpl implements RentalContractService {
         RentalContractResponseDTO responseDTO = modelMapper.map(rentalContract, RentalContractResponseDTO.class);
         responseDTO.setLessor(lessorClient.getLessorById(rentalContract.getLessor()));
         responseDTO.setStudent(studentClient.getStudentById(rentalContract.getStudent()));
+
+        kafkaProducerService.publishRentalCreatedEvent(new RentalCreateEvent(responseDTO.getId(), responseDTO.getPrice()));
 
         return new ApiResponse<>("Rental Contract created successfully", Estatus.SUCCESS, responseDTO);
     }

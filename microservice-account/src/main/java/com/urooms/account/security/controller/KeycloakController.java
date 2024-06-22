@@ -4,6 +4,8 @@ import com.urooms.account.security.dto.UserDTO;
 import com.urooms.account.security.service.KeycloakService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -17,6 +19,11 @@ public class KeycloakController {
 
     public KeycloakController(KeycloakService keycloakService) {
         this.keycloakService = keycloakService;
+    }
+
+    @GetMapping("/jwt")
+    public ResponseEntity<?> getProfile2(@AuthenticationPrincipal Jwt jwt) {
+        return ResponseEntity.ok(jwt.getTokenValue());
     }
 
     @GetMapping("/users")
